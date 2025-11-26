@@ -3,7 +3,7 @@
 #include <iostream>
 #include <iomanip>
 
-const char kWindowTitle[] = "LC1B_12_シミズグチ_ハル";
+const char kWindowTitle[] = "LE2B_12_シミズグチ_ハル";
 const float kRowHeight = 20.0f;
 const float PI = 3.14159265358979323846f;
 
