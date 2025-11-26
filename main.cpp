@@ -90,10 +90,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
 
-	///
-	/// ↓初期設定：画像通りの値を設定
-	///
-
 	const Vector3 axis = { 1.0f, 1.0f, 1.0f };
 	
 	const float angle = -0.44f;
@@ -124,11 +120,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		/// ↓描画処理ここから
 		///
 
-		// 画像通りの描画：座標(0, 0)から行列を表示
 		MatrixScreenPrintf(rotateMatrix, 0, 0, "rotateMatrix");
-
-		// 備考: 角度が画像断片の「0.44f」と異なることを示すための表示
-
 
 		///
 		/// ↑描画処理ここまで
