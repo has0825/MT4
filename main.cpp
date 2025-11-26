@@ -2,7 +2,7 @@
 #include <cmath>
 #include <cstring> 
 
-const char kWindowTitle[] = "LC1B_12_シミズグチ_ハル";
+const char kWindowTitle[] = "LE2B_11_シミズグチ_ハル";
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846f
