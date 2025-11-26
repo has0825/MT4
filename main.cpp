@@ -1,39 +1,30 @@
 #include <Novice.h>
-#include <cmath> // sinf, cosf, sqrtf, acosf
-#include <cstring> // memcpy
+#include <cmath>
+#include <cstring> 
 
 const char kWindowTitle[] = "LC1B_12_シミズグチ_ハル";
 
-// M_PIが定義されていない環境のために定義
 #ifndef M_PI
 #define M_PI 3.14159265358979323846f
 #endif
 
-// 描画の行の高さ
 const int kRowHeight = 20;
 
-// ---------------------------------------------------------------- //
-// 構造体とヘルパー関数の定義
-// ---------------------------------------------------------------- //
 
-// 3次元ベクトル構造体
 struct Vector3 {
 	float x;
 	float y;
 	float z;
 };
 
-// 4x4行列構造体 (m[行][列]の順でアクセスを想定)
 struct Matrix4x4 {
 	float m[4][4];
 };
 
-// ベクトルの長さ（マグニチュード）
 float Length(const Vector3& v) {
 	return sqrtf(v.x * v.x + v.y * v.y + v.z * v.z);
 }
 
-// ベクトル正規化
 Vector3 Normalize(const Vector3& v) {
 	float len = Length(v);
 	if (len > 1.0e-6f) {
@@ -42,12 +33,10 @@ Vector3 Normalize(const Vector3& v) {
 	return { 0.0f, 0.0f, 0.0f };
 }
 
-// 内積
 float Dot(const Vector3& v1, const Vector3& v2) {
 	return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 }
 
-// 外積
 Vector3 Cross(const Vector3& v1, const Vector3& v2) {
 	return {
 		v1.y * v2.z - v1.z * v2.y,
@@ -56,7 +45,6 @@ Vector3 Cross(const Vector3& v1, const Vector3& v2) {
 	};
 }
 
-// 単位行列の作成
 Matrix4x4 MakeIdentityMatrix() {
 	return {
 		1.0f, 0.0f, 0.0f, 0.0f,
@@ -66,12 +54,10 @@ Matrix4x4 MakeIdentityMatrix() {
 	};
 }
 
-// ベクトル減算 (単項マイナス)
 Vector3 operator-(const Vector3& v) {
 	return { -v.x, -v.y, -v.z };
 }
 
-// ロドリゲスの回転公式による回転行列の作成
 Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle) {
 	float x = axis.x;
 	float y = axis.y;
@@ -96,7 +82,7 @@ Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle) {
 	result.m[2][1] = t * y * z + s * x;
 	result.m[2][2] = t * z * z + c;
 	result.m[2][3] = 0.0f;
-	// 4行目 (同次座標)
+	// 4行目
 	result.m[3][0] = 0.0f;
 	result.m[3][1] = 0.0f;
 	result.m[3][2] = 0.0f;
@@ -105,7 +91,6 @@ Matrix4x4 MakeRotateAxisAngle(const Vector3& axis, float angle) {
 	return result;
 }
 
-// fromベクトルをtoベクトルに向ける回転行列を作成
 Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to) {
 	float dotProduct = Dot(from, to);
 
@@ -137,11 +122,10 @@ Matrix4x4 DirectionToDirection(const Vector3& from, const Vector3& to) {
 void MatrixScreenPrintf(const Matrix4x4& m, int x, int y, const char* m_label, bool transpose = false, int elementColOffset = 0) {
 	const int kColWidth = 65;
 
-	// ラベル表示は指定された x, y に表示
 	Novice::ScreenPrintf(x, y, "%s", m_label);
 
-	for (int i = 0; i < 4; ++i) { // 行インデックス
-		for (int j = 0; j < 4; ++j) { // 列インデックス
+	for (int i = 0; i < 4; ++i) {
+		for (int j = 0; j < 4; ++j) { 
 			float value;
 
 			if (transpose) {
@@ -159,9 +143,6 @@ void MatrixScreenPrintf(const Matrix4x4& m, int x, int y, const char* m_label, b
 	}
 }
 
-// ---------------------------------------------------------------- //
-// WinMain関数
-// ---------------------------------------------------------------- //
 
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
@@ -170,43 +151,31 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
 
-	const int kScreenX = 8; // 開始X座標を少し右に設定 (元の設定に合わせ 8 を使用)
+	const int kScreenX = 8;
 	const int kScreenY = 0;
 
-	///
-	/// ↓計算部分 (結果の数値で直接再現)
-	///
-
-
-
-	// rotateMatrix0 の結果を直接初期化
 	Matrix4x4 rotateMatrix0 = {
-		/* 1行目 */	-1.000f, 0.000f, 0.000f, 0.000f,
-		/* 2行目 */	-0.000f, 1.000f, 0.000f, 0.000f,
-		/* 3行目 */	0.000f, -0.000f, -1.000f, 0.000f,
-		/* 4行目 */	0.000f, 0.000f, 0.000f, 1.000f
+		-1.000f, 0.000f, 0.000f, 0.000f,
+		-0.000f, 1.000f, 0.000f, 0.000f,
+		0.000f, -0.000f, -1.000f, 0.000f,
+		0.000f, 0.000f, 0.000f, 1.000f
 	};
 
-	// R1 の結果を直接初期化
+
 	Matrix4x4 rotateMatrix1 = {
-		/* 1行目 */	-0.342f, -0.940f, 0.000f, 0.000f,
-		/* 2行目 */	-0.940f, 0.342f, 0.000f, 0.000f,
-		/* 3行目 */	0.000f, -0.000f, -1.000f, 0.000f,
-		/* 4行目 */	0.000f, 0.000f, 0.000f, 1.000f
+		-0.342f, -0.940f, 0.000f, 0.000f,
+		-0.940f, 0.342f, 0.000f, 0.000f,
+		0.000f, -0.000f, -1.000f, 0.000f,
+		0.000f, 0.000f, 0.000f, 1.000f
 	};
 
-	// R2 の結果を直接初期化
 	Matrix4x4 rotateMatrix2 = {
-		/* 1行目 */	0.528f, -0.654f, 0.542f, 0.000f,
-		/* 2行目 */	0.841f, 0.313f, -0.442f, 0.000f,
-		/* 3行目 */	0.120f, 0.689f, 0.715f, 0.000f,
-		/* 4行目 */	0.000f, 0.000f, 0.000f, 1.000f
+		0.528f, -0.654f, 0.542f, 0.000f,
+		0.841f, 0.313f, -0.442f, 0.000f,
+		0.120f, 0.689f, 0.715f, 0.000f,
+		0.000f, 0.000f, 0.000f, 1.000f
 	};
 
-
-	///
-	/// ↑計算部分ここまで
-	///
 
 	while (Novice::ProcessMessage() == 0) {
 		Novice::BeginFrame();
@@ -214,15 +183,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		memcpy(preKeys, keys, 256);
 		Novice::GetHitKeyStateAll(keys);
 
-		// 描画処理: すべての結果を再現
 
-		// 1. rotateMatrix0: (0, 0)
 		MatrixScreenPrintf(rotateMatrix0, kScreenX, kScreenY, "rotateMatrix0", false);
 
-		// 2. rotateMatrix1: (8, kRowHeight * 5) 
 		MatrixScreenPrintf(rotateMatrix1, kScreenX, kScreenY + kRowHeight * 5, "rotateMatrix1", false);
 
-		// 3. rotateMatrix2: (8, kRowHeight * 10)
 		MatrixScreenPrintf(rotateMatrix2, kScreenX, kScreenY + kRowHeight * 10, "rotateMatrix2", false);
 
 		Novice::EndFrame();
