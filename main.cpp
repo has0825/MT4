@@ -106,25 +106,21 @@ Matrix4x4 MakeRotateMatrix(const Quaternion& q) {
     float wy = q.w * q.y;
     float wz = q.w * q.z;
 
-    // 1行目
     result.m[0][0] = 1.0f - 2.0f * y2 - 2.0f * z2;
     result.m[0][1] = 2.0f * xy - 2.0f * wz;
     result.m[0][2] = 2.0f * xz + 2.0f * wy;
     result.m[0][3] = 0.0f;
 
-    // 2行目
     result.m[1][0] = 2.0f * xy + 2.0f * wz;
     result.m[1][1] = 1.0f - 2.0f * x2 - 2.0f * z2;
     result.m[1][2] = 2.0f * yz - 2.0f * wx;
     result.m[1][3] = 0.0f;
 
-    // 3行目
     result.m[2][0] = 2.0f * xz - 2.0f * wy;
     result.m[2][1] = 2.0f * yz + 2.0f * wx;
     result.m[2][2] = 1.0f - 2.0f * x2 - 2.0f * y2;
     result.m[2][3] = 0.0f;
 
-    // 4行目
     result.m[3][0] = 0.0f;
     result.m[3][1] = 0.0f;
     result.m[3][2] = 0.0f;
