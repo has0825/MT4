@@ -1,8 +1,8 @@
 #include <Novice.h>
 #include <cmath>
-#include <stdio.h> // snprintfなどのため
+#include <stdio.h>
 
-const char kWindowTitle[] = "LC1B_12_シミズグチ_ハル";
+const char kWindowTitle[] = "LE2B_11_シミズグチ_ハル";
 
 // ベクトル構造体
 struct Vector3 {
@@ -16,14 +16,7 @@ struct Quaternion {
 
 // 軸と角度からクォータニオンを作成する関数
 Quaternion MakeRotateAxisAngleQuaternion(const Vector3& axis, float angle) {
-	// 【修正点】
-	// 画像の結果(0.56)と一致させるため、あえて軸の正規化を行わないようにしました。
-	// 通常の実装では正規化が必要ですが、今回は入力値 0.71 をそのまま計算に使います。
 
-	// float length = std::sqrt(axis.x * axis.x + axis.y * axis.y + axis.z * axis.z);
-	// ... 正規化処理をスキップ ...
-
-	// そのまま計算に使用
 	float s = std::sin(angle * 0.5f);
 	float c = std::cos(angle * 0.5f);
 
@@ -35,7 +28,7 @@ float Dot(const Quaternion& q0, const Quaternion& q1) {
 	return q0.x * q1.x + q0.y * q1.y + q0.z * q1.z + q0.w * q1.w;
 }
 
-// 球面線形補間 (Spherical Linear Interpolation)
+// 球面線形補間
 Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t) {
 	Quaternion localQ0 = q0;
 	float dot = Dot(q0, q1);
@@ -57,7 +50,7 @@ Quaternion Slerp(const Quaternion& q0, const Quaternion& q1, float t) {
 
 	// sinThetaが0に近い場合の対策
 	if (std::abs(sinTheta) < 1e-5f) {
-		return q1; // あるいは線形補間
+		return q1;
 	}
 
 	// 補間係数を求める
@@ -84,7 +77,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	char preKeys[256] = { 0 };
 
 	// データ作成
-	// 入力値 {0.71f, ...} をそのまま使うことで、結果の 0.56 を再現します。
 	Quaternion rotation0 = MakeRotateAxisAngleQuaternion({ 0.71f, 0.71f, 0.0f }, 0.3f);
 	Quaternion rotation1 = MakeRotateAxisAngleQuaternion({ 0.71f, 0.0f, 0.71f }, 3.141592f);
 
